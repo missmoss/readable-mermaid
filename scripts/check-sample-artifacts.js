@@ -8,7 +8,8 @@ import { renderSampleArtifacts } from "./render-sample-artifacts.js";
 
 const repoRoot = process.cwd();
 const samplesDir = path.join(repoRoot, "samples");
-const baselineDir = path.join(samplesDir, "dist");
+const baselineDir = path.join(samplesDir, "baselines");
+const docsComparisonDir = path.join(repoRoot, "docs", "assets", "comparisons");
 const sampleFiles = (await readdir(samplesDir))
   .filter((name) => name.endsWith(".mmd"))
   .sort();
@@ -28,11 +29,13 @@ try {
   for (const sampleFile of sampleFiles) {
     const baseName = path.basename(sampleFile, ".mmd");
     const expectedSvgPath = path.join(baselineDir, `${baseName}.screen-readable.svg`);
-    const expectedPngPath = path.join(baselineDir, `${baseName}.screen-readable.png`);
+    const expectedPngPath = path.join(docsComparisonDir, `${baseName}.screen-readable.png`);
+    const expectedNativePngPath = path.join(docsComparisonDir, `${baseName}.mermaid-native.png`);
     const actualSvgPath = path.join(regressionDir, `${baseName}.screen-readable.svg`);
 
     await access(expectedSvgPath, constants.F_OK);
     await access(expectedPngPath, constants.F_OK);
+    await access(expectedNativePngPath, constants.F_OK);
     await access(actualSvgPath, constants.F_OK);
 
     const [expectedSvg, actualSvg] = await Promise.all([
@@ -49,5 +52,5 @@ try {
 }
 
 console.log(
-  `Rendered and matched ${sampleFiles.length} sample SVG baselines; verified matching PNG baselines exist.`
+  `Rendered and matched ${sampleFiles.length} sample SVG baselines; verified docs PNG comparison assets exist.`
 );

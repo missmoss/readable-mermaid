@@ -5,8 +5,7 @@ Local-first custom renderer for Mermaid `sequenceDiagram`, optimized for readabl
 ## How To Run
 
 ```bash
-npm install
-node ./src/cli.js ./samples/run-job-sequence.mmd
+npx readable-mermaid ./samples/run-job-sequence.mmd
 ```
 
 The CLI writes outputs to `./dist/` under your current working directory.
@@ -14,6 +13,14 @@ The CLI writes outputs to `./dist/` under your current working directory.
 If you want the command on your path:
 
 ```bash
+npm install -g readable-mermaid
+readable-mermaid ./samples/run-job-sequence.mmd
+```
+
+If you are developing locally from a clone:
+
+```bash
+npm install
 npm link
 readable-mermaid ./samples/run-job-sequence.mmd
 ```
@@ -38,13 +45,13 @@ If you need other Mermaid diagram types, contributions are welcome, but this pro
 
 | Mermaid native | readable-mermaid |
 | --- | --- |
-| ![Mermaid native](./samples/dist/ten-lane-twenty-message-sequence.mermaid-native.png) | ![readable-mermaid](./samples/dist/ten-lane-twenty-message-sequence.screen-readable.png) |
+| ![Mermaid native](./docs/assets/comparisons/ten-lane-twenty-message-sequence.mermaid-native.png) | ![readable-mermaid](./docs/assets/comparisons/ten-lane-twenty-message-sequence.screen-readable.png) |
 
 4 participants / long message labels:
 
 | Mermaid native | readable-mermaid |
 | --- | --- |
-| ![Mermaid native](./samples/dist/short-span-long-text-sequence.mermaid-native.png) | ![readable-mermaid](./samples/dist/short-span-long-text-sequence.screen-readable.png) |
+| ![Mermaid native](./docs/assets/comparisons/short-span-long-text-sequence.mermaid-native.png) | ![readable-mermaid](./docs/assets/comparisons/short-span-long-text-sequence.screen-readable.png) |
 
 ## What It Outputs
 
@@ -120,6 +127,12 @@ The repo includes targeted sequence-diagram samples for:
 - right-heavy return flows
 - dense four-lane sequences
 - `loop`, `opt`, `activate`, and `deactivate`
+
+Repository layout:
+
+- `samples/*.mmd`: input corpus
+- `samples/baselines/*.screen-readable.svg`: committed regression baselines
+- `docs/assets/comparisons/*.{mermaid-native,screen-readable}.png`: README and discussion assets
 
 ## Known Limits
 

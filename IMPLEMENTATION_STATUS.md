@@ -82,7 +82,8 @@
 
 - [scripts/check-sample-artifacts.js](/Users/claire/dev/readable-mermaid/scripts/check-sample-artifacts.js)
   - 驗證 10 個 sample 都有對應 `svg + png`
-- sample corpus 的 `screen-readable.svg` 基準檔已補齊
+- sample corpus 的 `screen-readable.svg` 基準檔已整理到 `samples/baselines/`
+- README / 討論串用的比較 PNG 已整理到 `docs/assets/comparisons/`
 - smoke render 命令：
   - `node ./src/cli.js ./samples/run-job-sequence.mmd`
 
@@ -189,8 +190,8 @@
 - 單元測試 6/6 通過
 - 10 個 sample 都有對應 `svg + png`
 - smoke render 成功輸出：
-  - `samples/dist/run-job-sequence.screen-readable.svg`
-  - `samples/dist/run-job-sequence.screen-readable.png`
+  - `dist/run-job-sequence.screen-readable.svg`
+  - `dist/run-job-sequence.screen-readable.png`
 - release bundle 成功生成
 
 ## Git Ignore Updates

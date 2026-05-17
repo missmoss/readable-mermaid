@@ -9,7 +9,7 @@ import { renderSequenceSvgDocument } from "../src/sequence-renderer.js";
 export async function renderSampleArtifacts(options = {}) {
   const repoRoot = options.repoRoot ?? process.cwd();
   const samplesDir = path.join(repoRoot, "samples");
-  const outputDir = options.outputDir ?? path.join(samplesDir, "dist");
+  const outputDir = options.outputDir ?? path.join(samplesDir, "baselines");
   const sampleFiles = (await readdir(samplesDir))
     .filter((name) => name.endsWith(".mmd"))
     .sort();
