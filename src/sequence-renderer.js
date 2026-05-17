@@ -1225,7 +1225,7 @@ function wrapText(text, maxWidth, fontSize, maxLines) {
     lines[lines.length - 1] = `${lines.at(-1)} ${overflow}`.trim();
   }
 
-  return lines;
+  return rebalanceSingleWordLines(lines, maxWidth, fontSize);
 }
 
 function rebalanceWrappedLines(lines, maxWidth, fontSize) {
@@ -1250,6 +1250,53 @@ function rebalanceWrappedLines(lines, maxWidth, fontSize) {
     rebalanced.push(current);
   }
   return rebalanced;
+}
+
+function rebalanceSingleWordLines(lines, maxWidth, fontSize) {
+  let wordLines = lines.map((line) => line.split(/\s+/).filter(Boolean));
+
+  for (let index = 1; index < wordLines.length; index += 1) {
+    if (wordLines[index].length !== 1) {
+      continue;
+    }
+
+    wordLines = pushWordForward(wordLines, index, maxWidth, fontSize);
+  }
+
+  return wordLines.map((words) => words.join(" "));
+}
+
+function pushWordForward(wordLines, targetIndex, maxWidth, fontSize) {
+  for (let donorIndex = targetIndex - 1; donorIndex >= 0; donorIndex -= 1) {
+    if (wordLines[donorIndex].length <= 2) {
+      continue;
+    }
+
+    const candidate = wordLines.map((words) => [...words]);
+    let canRebalance = true;
+
+    for (let index = donorIndex + 1; index <= targetIndex; index += 1) {
+      const previousLine = candidate[index - 1];
+      if (previousLine.length <= 2) {
+        canRebalance = false;
+        break;
+      }
+
+      const shiftedWord = previousLine.pop();
+      candidate[index].unshift(shiftedWord);
+
+      if (measureTextWidth(candidate[index].join(" "), fontSize) > maxWidth) {
+        canRebalance = false;
+        break;
+      }
+    }
+
+    if (canRebalance) {
+      return candidate;
+    }
+  }
+
+  return wordLines;
 }
 
 function measureTextWidth(text, fontSize) {
