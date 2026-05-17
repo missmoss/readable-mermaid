@@ -1,13 +1,18 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { tmpdir } from "node:os";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { fileURLToPath } from "node:url";
 
 import { renderDocInlineDiagram } from "../src/render.js";
-import { renderInputFile, main } from "../src/cli.js";
+import { isCliEntrypoint, renderInputFile, main } from "../src/cli.js";
 import { EXIT_CODES } from "../src/errors.js";
 import { parseSequenceDiagram } from "../src/sequence-renderer.js";
+
+const execFileAsync = promisify(execFile);
 
 test("renderDocInlineDiagram rejects unsupported non-sequence sources", async () => {
   await assert.rejects(
@@ -74,4 +79,29 @@ test("main returns a stable usage exit code for invalid CLI invocations", async 
   assert.equal(exitCode, EXIT_CODES.USAGE);
   assert.equal(stdout.length, 0);
   assert.match(stderr.join("\n"), /Usage: readable-mermaid <diagram\.mmd>/);
+});
+
+test("isCliEntrypoint resolves symlinked cli paths used by npm bin shims", async () => {
+  const fixtureDir = path.join(tmpdir(), `readable-mermaid-cli-entry-${process.pid}`);
+  const symlinkPath = path.join(fixtureDir, "readable-mermaid");
+  const cliPath = fileURLToPath(new URL("../src/cli.js", import.meta.url));
+
+  await mkdir(fixtureDir, { recursive: true });
+  await symlink(cliPath, symlinkPath);
+
+  assert.equal(isCliEntrypoint(symlinkPath), true);
+});
+
+test("symlinked cli invocation still executes main and prints help output", async () => {
+  const fixtureDir = path.join(tmpdir(), `readable-mermaid-cli-help-${process.pid}`);
+  const symlinkPath = path.join(fixtureDir, "readable-mermaid");
+  const cliPath = fileURLToPath(new URL("../src/cli.js", import.meta.url));
+
+  await mkdir(fixtureDir, { recursive: true });
+  await symlink(cliPath, symlinkPath);
+
+  const { stdout, stderr } = await execFileAsync(process.execPath, [symlinkPath, "--help"]);
+
+  assert.match(stdout, /Usage: readable-mermaid <diagram\.mmd>/);
+  assert.equal(stderr, "");
 });

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { realpathSync } from "node:fs";
 import { mkdir, readFile, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -119,9 +120,19 @@ export async function main(args = process.argv.slice(2), io = {}) {
   }
 }
 
-const isEntrypoint = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+export function isCliEntrypoint(argv1 = process.argv[1]) {
+  if (!argv1) {
+    return false;
+  }
 
-if (isEntrypoint) {
+  try {
+    return realpathSync(argv1) === fileURLToPath(import.meta.url);
+  } catch {
+    return path.resolve(argv1) === fileURLToPath(import.meta.url);
+  }
+}
+
+if (isCliEntrypoint()) {
   main().then((exitCode) => {
     process.exitCode = exitCode;
   });
