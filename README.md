@@ -25,6 +25,23 @@ npm link
 readable-mermaid input.mmd
 ```
 
+## AI Integration
+
+This tool is designed to be called by AI agents as a post-processing step after generating Mermaid diagrams.
+
+**Claude Code (CLAUDE.md)**
+
+Add this to your project's `CLAUDE.md`:
+
+```
+When generating Mermaid sequence diagrams, save the diagram as a .mmd file,
+then run `npx readable-mermaid input.mmd` to produce a readable SVG and PNG.
+```
+
+**Any CLI-capable agent**
+
+Any agent or script that can run shell commands can call `npx readable-mermaid input.mmd`. The output paths are deterministic and printed to stdout.
+
 ## Why
 
 Mermaid's default output works fine for simple diagrams (≤4 participants, short labels). But once you hit 6+ participants with realistic message labels — which is normal for any real technical design document — text becomes too small to read without zooming and scrolling. AI tools make this worse by generating complete, detailed diagrams that are technically correct but practically unreadable.
