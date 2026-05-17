@@ -4,6 +4,14 @@
   "license": "MIT",
   "type": "module",
   "description": "Zero-config Mermaid renderer that fits diagrams for inline technical design docs.",
+  "homepage": "https://github.com/missmoss/readable-mermaid#readme",
+  "bugs": {
+    "url": "https://github.com/missmoss/readable-mermaid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/missmoss/readable-mermaid.git"
+  },
   "files": [
     "src",
     "README.md",
