@@ -5,7 +5,7 @@ Local-first custom renderer for Mermaid `sequenceDiagram`, optimized for readabl
 ## How To Run
 
 ```bash
-npx readable-mermaid ./samples/run-job-sequence.mmd
+npx readable-mermaid input.mmd
 ```
 
 The CLI writes outputs to `./dist/` under your current working directory.
@@ -14,7 +14,7 @@ If you want the command on your path:
 
 ```bash
 npm install -g readable-mermaid
-readable-mermaid ./samples/run-job-sequence.mmd
+readable-mermaid input.mmd
 ```
 
 If you are developing locally from a clone:
@@ -22,7 +22,7 @@ If you are developing locally from a clone:
 ```bash
 npm install
 npm link
-readable-mermaid ./samples/run-job-sequence.mmd
+readable-mermaid input.mmd
 ```
 
 ## Why
