@@ -1,7 +1,6 @@
 # readable-mermaid
 
-Local-first renderer for AI-generated Mermaid `sequenceDiagram` files,
-optimized for readable technical design documents and screenshots.
+Local-first renderer for Mermaid `sequenceDiagram` files, esapecially AI-generated complex ones, optimized for readable diagram in technical design documents, and designed for AI agent calls.
 
 ## How To Run
 
