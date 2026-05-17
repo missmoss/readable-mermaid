@@ -126,6 +126,14 @@ async function renderSample(page, sampleName) {
     svgElement.setAttribute("height", String(height));
     svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
+    const backgroundRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    backgroundRect.setAttribute("x", "0");
+    backgroundRect.setAttribute("y", "0");
+    backgroundRect.setAttribute("width", String(width));
+    backgroundRect.setAttribute("height", String(height));
+    backgroundRect.setAttribute("fill", "#ffffff");
+    svgElement.insertBefore(backgroundRect, svgElement.firstChild);
+
     return svgElement.outerHTML;
   }, source);
 
