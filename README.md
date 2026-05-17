@@ -45,21 +45,21 @@ If you need other Mermaid diagram types, contributions are welcome, but this pro
 
 Mermaid native:
 
-![Mermaid native](./docs/assets/comparisons/ten-lane-twenty-message-sequence.mermaid-native.png)
+<img src="./docs/assets/comparisons/ten-lane-twenty-message-sequence.mermaid-native.svg" alt="Mermaid native" width="100%">
 
 readable-mermaid:
 
-![readable-mermaid](./docs/assets/comparisons/ten-lane-twenty-message-sequence.screen-readable.png)
+<img src="./docs/assets/comparisons/ten-lane-twenty-message-sequence.screen-readable.png" alt="readable-mermaid" width="100%">
 
 4 participants / long message labels:
 
 Mermaid native:
 
-![Mermaid native](./docs/assets/comparisons/short-span-long-text-sequence.mermaid-native.png)
+<img src="./docs/assets/comparisons/short-span-long-text-sequence.mermaid-native.svg" alt="Mermaid native" width="100%">
 
 readable-mermaid:
 
-![readable-mermaid](./docs/assets/comparisons/short-span-long-text-sequence.screen-readable.png)
+<img src="./docs/assets/comparisons/short-span-long-text-sequence.screen-readable.png" alt="readable-mermaid" width="100%">
 
 ## What It Outputs
 
