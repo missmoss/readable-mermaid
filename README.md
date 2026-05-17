@@ -1,6 +1,7 @@
 # readable-mermaid
 
-Local-first custom renderer for Mermaid `sequenceDiagram`, optimized for readable technical design screenshots.
+Local-first renderer for AI-generated Mermaid `sequenceDiagram` files,
+optimized for readable technical design documents and screenshots.
 
 ## How To Run
 
@@ -27,15 +28,18 @@ readable-mermaid input.mmd
 
 ## AI Integration
 
-This tool is designed to be called by AI agents as a post-processing step after generating Mermaid diagrams.
+This tool is designed to be called by AI agents after generating Mermaid diagrams.
+It parses the `.mmd` source and renders readable SVG/PNG outputs locally.
 
-**Claude Code (CLAUDE.md)**
+Claude Code (CLAUDE.md)
 
 Add this to your project's `CLAUDE.md`:
 
 ```
-When generating Mermaid sequence diagrams, save the diagram as a .mmd file,
-then run `npx readable-mermaid input.mmd` to produce a readable SVG and PNG.
+When generating Mermaid sequence diagrams for design documents,
+save the diagram as a .mmd file, then run
+`npx readable-mermaid input.mmd`
+to produce readable SVG and PNG outputs.
 ```
 
 **Any CLI-capable agent**
