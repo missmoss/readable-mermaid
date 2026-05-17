@@ -94,6 +94,13 @@ async function renderSample(page, sampleName) {
     mermaidApi.initialize({
       startOnLoad: false,
       securityLevel: "strict",
+      theme: "default",
+      themeVariables: {
+        background: "#ffffff",
+        mainBkg: "#ffffff",
+        secondBkg: "#ffffff",
+        tertiaryColor: "#ffffff"
+      },
       sequence: {
         useMaxWidth: false
       }
