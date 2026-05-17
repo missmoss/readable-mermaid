@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant Client as Client App
+    participant API as API Gateway
+    participant Cache as Cache Layer
+    participant DB as Primary Database
+
+    Client->>API: Request project summary for the selected workspace
+    activate API
+    opt Cache hit
+        API->>Cache: Read cached summary payload
+        activate Cache
+        Cache-->>API: Return cached summary payload
+        deactivate Cache
+        API-->>Client: Return cached summary response immediately
+    end
+
+    loop Poll until report generation is complete or timeout budget is exhausted
+        API->>DB: Read latest report status and completion metadata
+        activate DB
+        DB-->>API: Return current report state for the active request
+        deactivate DB
+    end
+
+    API-->>Client: Return final report summary and last known progress state
+    deactivate API

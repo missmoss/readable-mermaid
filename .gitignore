@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.tmp-regression/
+release/
+.npm-cache-release/
+.DS_Store

@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant Client as Client App
+    participant Gateway as API Gateway
+    participant Policy as Policy Engine
+    participant Billing as Billing Service
+    participant Queue as Job Queue
+    participant Worker as Worker
+    participant Data as Warehouse
+
+    Client->>Gateway: Submit export request with destination settings, encryption policy, retention rules, and notification preferences
+    Gateway->>Policy: Evaluate export permission, data sensitivity policy, and regional routing requirements
+    alt Export blocked by policy
+        Policy-->>Gateway: Return denial reason, remediation hint, and audit reference
+        Gateway-->>Client: Return validation error with actionable policy feedback
+    else Export allowed
+        Policy-->>Gateway: Return approved export policy and execution constraints
+        Gateway->>Billing: Validate plan entitlement and export quota before scheduling the job
+        Billing-->>Gateway: Return usage allowance and feature gating decision
+        par Schedule export
+            Gateway->>Queue: Enqueue export job with approved policy, destination bundle, and execution constraints
+            Queue-->>Worker: Dispatch export preparation task to worker pool
+        and Prepare storage
+            Gateway->>Data: Reserve export snapshot and downstream delivery metadata for the requested dataset bundle
+            Data-->>Gateway: Return export snapshot id and readiness confirmation
+        end
+        Worker-->>Client: Stream export started acknowledgement for the original request context
+    end

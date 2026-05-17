@@ -1,0 +1,42 @@
+{
+  "name": "readable-mermaid",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "Zero-config Mermaid renderer that fits diagrams for inline technical design docs.",
+  "files": [
+    "src",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mermaid",
+    "cli",
+    "sequence-diagram",
+    "svg",
+    "png",
+    "local-first"
+  ],
+  "bin": {
+    "readable-mermaid": "./src/cli.js"
+  },
+  "scripts": {
+    "start": "node ./src/cli.js",
+    "test:sample": "node ./src/cli.js ./samples/run-job-sequence.mmd",
+    "test": "node --test",
+    "test:regression": "node ./scripts/check-sample-artifacts.js",
+    "samples:refresh": "node ./scripts/render-sample-artifacts.js",
+    "release:licenses": "node ./scripts/generate-license-inventory.js",
+    "release:checksums": "node ./scripts/generate-checksums.js",
+    "release:artifacts": "node ./scripts/prepare-release-artifacts.js",
+    "release:sbom": "npm sbom --omit=dev --sbom-format=cyclonedx",
+    "deps:prod": "npm ls --omit=dev --depth=0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "puppeteer-core": "24.9.0"
+  }
+}

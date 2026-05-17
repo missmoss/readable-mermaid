@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant Admin as Workspace Administrator Console
+    participant Gateway as Centralized Access Gateway
+    participant Policy as Organization Policy Evaluation Service
+    participant Store as Project Configuration and Audit Store
+
+    Note over Admin: The operator must complete elevated authentication before changing organization-wide defaults
+    Admin->>Gateway: Submit configuration update request with rollout scope and enforcement mode
+    Note over Gateway,Store: All configuration writes must preserve an immutable audit trail and a rollback snapshot
+    Gateway->>Policy: Validate change set against policy constraints and environment restrictions
+    Policy-->>Gateway: Return approved policy result and required audit attributes
+    Gateway->>Store: Persist configuration update, rollback snapshot, and operator attribution metadata
+    Store-->>Gateway: Return persisted version id and rollback reference
+    Gateway-->>Admin: Confirm configuration update and expose rollback identifier

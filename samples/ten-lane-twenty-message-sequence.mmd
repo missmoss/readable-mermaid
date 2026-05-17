@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    participant User as User
+    participant Frontend as Frontend
+    participant Gateway as API Gateway
+    participant Auth as Auth Service
+    participant Project as Project Service
+    participant Orchestrator as Orchestrator
+    participant Queue as Job Queue
+    participant Worker as Worker
+    participant Artifact as Artifact Store
+    participant DB as Metadata DB
+
+    User->>Frontend: Open release workflow and confirm deployment options
+    Frontend->>Gateway: Submit release request with environment, commit, and rollout policy
+    Gateway->>Auth: Validate session, team membership, and deploy permissions
+    Auth-->>Gateway: Return identity, scopes, and approval context
+    Gateway->>Project: Load service configuration, release template, and environment defaults
+    Project-->>Gateway: Return normalized release settings and dependency graph
+    Gateway->>DB: Create release record with pending status and full request snapshot
+    DB-->>Gateway: Persisted release id and audit metadata
+    Gateway->>Orchestrator: Start release planning with release id and deployment graph
+    Orchestrator->>Queue: Enqueue rollout preparation job with ordered execution plan
+    Queue-->>Worker: Dispatch rollout preparation task to worker pool
+    Worker->>Artifact: Resolve build artifact, manifest, and signed provenance bundle
+    Artifact-->>Worker: Return artifact uri, digest, and verification result
+    Worker->>DB: Update release state to prepared with artifact and validation summary
+    DB-->>Worker: Persist prepared state and timestamps
+    Worker-->>Orchestrator: Preparation complete with rollout checkpoints and health gates
+    Orchestrator->>Queue: Enqueue execution job for staged rollout and live monitoring
+    Queue-->>Worker: Dispatch execution task with rollout batches and abort thresholds
+    Worker->>DB: Persist rollout progress, partial completion, and final succeeded status
+    DB-->>Frontend: Surface final release status for UI refresh and follow-up actions

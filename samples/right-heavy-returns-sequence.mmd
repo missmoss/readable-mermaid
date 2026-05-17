@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant UI as Admin UI
+    participant API as API Gateway
+    participant Orchestrator as Orchestrator
+    participant Queue as Job Queue
+    participant Worker as Worker
+    participant Audit as Audit Log
+
+    UI->>API: Submit maintenance workflow request
+    API->>Orchestrator: Start maintenance plan
+    Orchestrator->>Queue: Enqueue step one
+    Queue-->>Worker: Dispatch step one
+    Worker->>Audit: Persist step one progress
+    Audit-->>Worker: Confirm progress persisted
+    Worker-->>Queue: Step one complete
+    Queue-->>Orchestrator: Step one completion received
+    Orchestrator->>Queue: Enqueue step two
+    Queue-->>Worker: Dispatch step two
+    Worker->>Audit: Persist step two progress
+    Audit-->>Worker: Confirm step two persisted
+    Worker-->>Queue: Step two complete
+    Queue-->>Orchestrator: Step two completion received
+    Orchestrator-->>API: Workflow completed with final status and audit references
+    API-->>UI: Return completion response for operator refresh

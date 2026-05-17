@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant User as User
+    participant FE as Frontend
+    participant BE as Backend API
+    participant Trigger as Trigger Layer
+    participant StatusDB as Status Database
+    participant Compute as Compute Layer
+
+    User->>FE: Click Run on the job configuration page
+    FE->>BE: Send run request with job id, inputs, and current user context
+    BE->>StatusDB: Create run record with status queued and request metadata
+    StatusDB-->>BE: Return persisted run id and initial status snapshot
+    BE->>Trigger: Publish run event with run id and execution payload
+    Trigger-->>BE: Acknowledge trigger accepted for asynchronous execution
+    BE-->>FE: Return run id and queued status for immediate UI update
+    FE-->>User: Show run started state with queued status and run identifier
+    Trigger->>Compute: Start compute job with normalized payload and runtime config
+    Compute->>StatusDB: Update run status to running with worker metadata and start time
+    StatusDB-->>Compute: Confirm running status persisted
+    Compute->>Compute: Execute workload and stream intermediate progress internally
+    Compute->>StatusDB: Persist final outputs, completion time, and succeeded status
+    StatusDB-->>Compute: Confirm final state persisted
+    FE->>BE: Poll latest run status using run id
+    BE->>StatusDB: Read latest status and result summary for run id
+    StatusDB-->>BE: Return succeeded status, timestamps, and output summary
+    BE-->>FE: Return completed status payload for UI refresh
+    FE-->>User: Show run completed state with latest output summary

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Validate sample artifacts
+        run: npm run test:regression
+
+      - name: Render smoke sample
+        run: node ./src/cli.js ./samples/run-job-sequence.mmd
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev
+
+      - name: Build release artifacts
+        run: npm run release:artifacts
+
+      - name: Upload release bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: readable-mermaid-release-bundle
+          path: release/
+          if-no-files-found: error
+

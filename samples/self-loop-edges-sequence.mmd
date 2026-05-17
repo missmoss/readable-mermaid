@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    participant User as User
+    participant API as API Gateway
+    participant Worker as Worker
+
+    User->>User: Re-check selected options before submitting the request
+    User->>API: Submit operation request with confirmed runtime parameters
+    API->>Worker: Dispatch background execution task
+    Worker->>Worker: Reconcile local state, retry budget, and partial progress markers
+    Worker-->>API: Return execution summary and completion metadata
+    API-->>User: Surface final response for the current operation

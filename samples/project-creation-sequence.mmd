@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant Web as Web App
+    participant API as API Gateway
+    participant Auth as Auth Service
+    participant User as User Service
+    participant Bill as Billing
+    participant Queue as Job Queue
+    participant Worker as Worker
+    participant Data as Warehouse
+
+    Web->>API: Submit project creation request with initial configuration and notification preferences
+    API->>Auth: Validate session, workspace membership, and granular feature permissions
+    Auth-->>API: Authorization context with user identity and effective permissions
+    API->>User: Load organization defaults, templates, and onboarding state
+    User-->>API: Organization context and user profile settings
+    API->>Bill: Check plan limits, seat availability, and project-level entitlement rules
+    Bill-->>API: Usage snapshot and allowed feature set
+    API->>Queue: Enqueue background provisioning job with all normalized request metadata
+    Queue-->>Worker: Dispatch provisioning task to worker pool
+    Worker->>Data: Persist audit trail, project metadata, and setup checkpoints for reporting
+    Data-->>Worker: Storage confirmed
+    Worker-->>API: Project ready with identifiers, status, and follow-up tasks
+    API-->>Web: Return success payload for inline confirmation and post-create navigation

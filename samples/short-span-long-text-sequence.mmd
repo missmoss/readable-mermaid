@@ -1,0 +1,11 @@
+sequenceDiagram
+    autonumber
+    participant Web as Web App
+    participant API as API Gateway
+    participant DB as Primary Database
+    participant Cache as Cache Layer
+
+    Web->>API: Submit dashboard refresh request with filters, selected dimensions, pinned widgets, and current viewport preferences
+    API->>DB: Load the latest persisted dashboard snapshot together with query planning hints and historical aggregation settings
+    DB-->>API: Return dashboard snapshot, materialized view references, and cache invalidation guidance for immediate rendering
+    API-->>Web: Return a fully normalized dashboard payload ready for client-side rendering and optimistic interaction updates

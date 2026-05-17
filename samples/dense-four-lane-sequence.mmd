@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    participant User as User
+    participant Frontend as Frontend
+    participant API as API Gateway
+    participant DB as Metadata DB
+
+    User->>Frontend: Open report builder
+    Frontend->>API: Request report defaults
+    API->>DB: Load saved report defaults
+    DB-->>API: Return saved defaults
+    API-->>Frontend: Return report defaults
+    Frontend-->>User: Render initial builder state
+    User->>Frontend: Change grouping and filters
+    Frontend->>API: Preview report query
+    API->>DB: Validate filter compatibility
+    DB-->>API: Return filter validation result
+    API-->>Frontend: Return preview summary
+    User->>Frontend: Confirm report generation
+    Frontend->>API: Submit final report job
+    API->>DB: Persist report job with pending status
+    DB-->>API: Return report job id
+    API-->>Frontend: Return accepted report job
+    Frontend-->>User: Show queued report state
+    Frontend->>API: Poll report state
+    API->>DB: Load latest report state
+    DB-->>API: Return running report progress
+    API-->>Frontend: Return running progress payload
+    Frontend-->>User: Refresh running state
+    Frontend->>API: Poll report state again
+    API->>DB: Load final report state
+    DB-->>API: Return completed report with download metadata
+    API-->>Frontend: Return completed report payload
+    Frontend-->>User: Show completed report summary
