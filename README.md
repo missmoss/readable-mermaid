@@ -8,7 +8,7 @@ Local-first custom renderer for Mermaid `sequenceDiagram`, optimized for readabl
 npx readable-mermaid input.mmd
 ```
 
-The CLI writes outputs to `./dist/` under your current working directory.
+The CLI writes outputs next to the input `.mmd` file by default.
 
 If you want the command on your path:
 
@@ -65,8 +65,8 @@ readable-mermaid:
 
 Given one `.mmd` file inside the current working directory, the CLI exports:
 
-- `dist/<name>.screen-readable.svg`
-- `dist/<name>.screen-readable.png`
+- `<input-dir>/<name>.screen-readable.svg`
+- `<input-dir>/<name>.screen-readable.png`
 
 ## Scope
 
@@ -101,7 +101,7 @@ This project expects one of these app binaries to exist:
 
 - input stays on the local machine
 - the CLI only reads inputs inside the current working directory
-- the CLI only writes outputs inside `./dist/` under the current working directory
+- the CLI only writes outputs inside the current working directory
 - rendering happens through a local browser process
 - external `http:` and `https:` requests are blocked during render
 - no SaaS backend, upload step, or remote API call in the render path

@@ -8,7 +8,7 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 import { renderDocInlineDiagram } from "../src/render.js";
-import { isCliEntrypoint, renderInputFile, main } from "../src/cli.js";
+import { isCliEntrypoint, renderInputFile, main, resolveOutputDir } from "../src/cli.js";
 import { EXIT_CODES } from "../src/errors.js";
 import { parseSequenceDiagram } from "../src/sequence-renderer.js";
 
@@ -79,6 +79,21 @@ test("main returns a stable usage exit code for invalid CLI invocations", async 
   assert.equal(exitCode, EXIT_CODES.USAGE);
   assert.equal(stdout.length, 0);
   assert.match(stderr.join("\n"), /Usage: readable-mermaid <diagram\.mmd>/);
+});
+
+test("resolveOutputDir defaults to the input file directory", () => {
+  const resolved = resolveOutputDir("/tmp/workspace/diagrams/test.mmd");
+
+  assert.equal(resolved, "/tmp/workspace/diagrams");
+});
+
+test("resolveOutputDir keeps explicit outputDir relative to the workspace root", () => {
+  const resolved = resolveOutputDir("/tmp/workspace/diagrams/test.mmd", {
+    workspaceRoot: "/tmp/workspace",
+    outputDir: "dist"
+  });
+
+  assert.equal(resolved, "/tmp/workspace/dist");
 });
 
 test("isCliEntrypoint resolves symlinked cli paths used by npm bin shims", async () => {

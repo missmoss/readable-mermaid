@@ -36,12 +36,22 @@ function buildOutputPaths(outputDir, baseName, outputSuffix) {
   };
 }
 
+export function resolveOutputDir(inputFilePath, options = {}) {
+  const workspaceRoot = path.resolve(options.workspaceRoot ?? process.cwd());
+
+  if (options.outputDir) {
+    return path.resolve(workspaceRoot, options.outputDir);
+  }
+
+  return path.dirname(inputFilePath);
+}
+
 export async function renderInputFile(inputPath, options = {}) {
   const workspaceRoot = path.resolve(options.workspaceRoot ?? process.cwd());
-  const outputDir = path.resolve(options.outputDir ?? path.join(workspaceRoot, "dist"));
   const absoluteInputPath = path.resolve(workspaceRoot, inputPath);
   const realWorkspaceRoot = await realpath(workspaceRoot);
   const realInputPath = await realpath(absoluteInputPath);
+  const outputDir = resolveOutputDir(realInputPath, options);
 
   if (!isPathInside(realWorkspaceRoot, realInputPath)) {
     throw new ReadableMermaidError(
