@@ -1,9 +1,9 @@
 {
   "name": "readable-mermaid",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "type": "module",
-  "description": "Zero-config Mermaid renderer that fits diagrams for inline technical design docs.",
+  "description": "Local-first custom renderer for Mermaid sequenceDiagram, optimized for readability and designed for AI agent calls.",
   "homepage": "https://github.com/missmoss/readable-mermaid#readme",
   "bugs": {
     "url": "https://github.com/missmoss/readable-mermaid/issues"
@@ -22,9 +22,12 @@
     "mermaid",
     "cli",
     "sequence-diagram",
+    "diagram",
     "svg",
     "png",
-    "local-first"
+    "local-first",
+    "readability", 
+    "ai-tools"
   ],
   "bin": {
     "readable-mermaid": "./src/cli.js"
